@@ -73,7 +73,7 @@ source = "scm"
 "tests/**/*" = ["D", "PLR2004"]
 
 [tool.ruff.pydocstyle]
-convention = "numpy"
+convention = "pep257"
 
 [tool.mypy]
 python_version = "3.7"
