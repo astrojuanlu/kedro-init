@@ -9,7 +9,10 @@ requires-python = ">=3.8"
 license = {file = "LICENSE"}
 description = "A simple CLI command that initialises a Kedro project from an existing Python package"
 dependencies = [
-    # "structlog",
+    "click",
+    "pygetpackages",
+    "tomli",
+    "tomli-w",
 ]
 authors = [
     {name = "Juan Luis Cano Rodríguez", email = "juan_luis_cano@mckinsey.com"}
@@ -32,6 +35,9 @@ dynamic = ["version"]
 source = "https://github.com/astrojuanlu/kedro-init"
 tracker = "https://github.com/astrojuanlu/kedro-init/issues"
 documentation = "https://kedro-init.readthedocs.io"
+
+[project.scripts]
+kedro-init = "kedro_init.cli:cli"
 
 [project.optional-dependencies]
 test = [
@@ -58,6 +64,7 @@ select = [
     "I",  # isort
     "PL",  # Pylint
 ]
+ignore = ["D100", "D103"]
 
 [tool.pdm.version]
 source = "scm"
