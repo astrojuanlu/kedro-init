@@ -40,6 +40,9 @@ documentation = "https://kedro-init.readthedocs.io"
 kedro-init = "kedro_init.cli:cli"
 
 [project.optional-dependencies]
+rich = [
+    "rich",
+]
 test = [
     "mypy",
     "hypothesis",
