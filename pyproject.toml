@@ -10,6 +10,7 @@ license = {file = "LICENSE"}
 description = "A simple CLI command that initialises a Kedro project from an existing Python package"
 dependencies = [
     "click",
+    "installer",
     "pygetimportables>=0.2.1",
     "tomlkit",
 ]

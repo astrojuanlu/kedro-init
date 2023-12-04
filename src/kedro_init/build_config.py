@@ -1,5 +1,10 @@
+import tempfile
 import typing as t
+import zipfile
 from pathlib import Path
+
+from installer.sources import WheelFile
+from installer.utils import parse_metadata_file
 
 try:
     from importlib.metadata import PackageNotFoundError, version
@@ -7,8 +12,20 @@ except ModuleNotFoundError:
     from importlib_metadata import PackageNotFoundError, version
 
 import tomlkit
-from pygetimportables import get_top_importables
+from pygetimportables import _simple_build_wheel, get_top_importables_from_wheel
 from validate_pyproject import api, errors, plugins
+
+
+def _get_importables_and_project_name(project_root, outdir):
+    wheel_path = _simple_build_wheel(project_root, outdir)
+
+    with zipfile.ZipFile(wheel_path, "r") as zf:
+        wheel_file = WheelFile(zf)
+        metadata = parse_metadata_file(wheel_file.read_dist_info("METADATA"))
+
+    package_names = get_top_importables_from_wheel(wheel_path)
+    project_name = metadata["Name"]
+    return package_names, project_name
 
 
 def kedro_pyproject(tool_name: str) -> dict:
@@ -42,14 +59,15 @@ def get_or_create_build_config(project_root: Path) -> tuple[bool, t.Any]:
         pyproject_toml = tomlkit.load(fh)
 
     if not pyproject_toml.get("tool", {}).get("kedro", {}):
-        # Kedro build config not present, generate it
-        package_names = get_top_importables(project_root)
+        with tempfile.TemporaryDirectory() as outdir:
+            package_names, project_name = _get_importables_and_project_name(
+                project_root, outdir
+            )
         if len(package_names) == 1:
             package_name = package_names.pop()
         else:
             raise ValueError("More than one package found in project root")
 
-        project_name = pyproject_toml["project"]["name"]
         return False, {
             "project_name": project_name,
             "package_name": package_name,
