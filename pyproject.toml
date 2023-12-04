@@ -5,12 +5,12 @@ build-backend = "pdm.backend"
 [project]
 name = "kedro-init"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 license = {file = "LICENSE"}
 description = "A simple CLI command that initialises a Kedro project from an existing Python package"
 dependencies = [
     "click",
-    "pygetpackages",
+    "pygetimportables>=0.2.1",
     "tomli",
     "tomli-w",
 ]
@@ -24,7 +24,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",

@@ -8,7 +8,7 @@ except ModuleNotFoundError:
 
 import tomli
 import tomli_w
-from pygetpackages import get_packages
+from pygetimportables import get_top_importables
 from validate_pyproject import api, errors, plugins
 
 
@@ -44,9 +44,9 @@ def get_or_create_build_config(project_root: Path) -> tuple[bool, t.Any]:
 
     if not pyproject_toml.get("tool", {}).get("kedro", {}):
         # Kedro build config not present, generate it
-        package_names = get_packages(project_root)
+        package_names = get_top_importables(project_root)
         if len(package_names) == 1:
-            package_name = package_names[0]
+            package_name = package_names.pop()
         else:
             raise ValueError("More than one package found in project root")
 
