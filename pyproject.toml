@@ -11,6 +11,7 @@ description = "A simple CLI command that initialises a Kedro project from an exi
 dependencies = [
     "click",
     "installer",
+    "kedro>=0.18.14",  # Mostly arbitrary, but ensures compatibility
     "pygetimportables>=0.2.1",
     "tomlkit",
 ]
