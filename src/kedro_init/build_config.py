@@ -6,8 +6,7 @@ try:
 except ModuleNotFoundError:
     from importlib_metadata import PackageNotFoundError, version
 
-import tomli
-import tomli_w
+import tomlkit
 from pygetimportables import get_top_importables
 from validate_pyproject import api, errors, plugins
 
@@ -39,8 +38,8 @@ def get_or_create_build_config(project_root: Path) -> tuple[bool, t.Any]:
     ]
     validator = api.Validator(available_plugins)
 
-    with (project_root / "pyproject.toml").open("rb") as fh:
-        pyproject_toml = tomli.load(fh)
+    with (project_root / "pyproject.toml").open("r") as fh:
+        pyproject_toml = tomlkit.load(fh)
 
     if not pyproject_toml.get("tool", {}).get("kedro", {}):
         # Kedro build config not present, generate it
@@ -67,10 +66,10 @@ def get_or_create_build_config(project_root: Path) -> tuple[bool, t.Any]:
 
 
 def init_build_config(project_root: Path, *, build_config: dict[str, str]):
-    with (project_root / "pyproject.toml").open("rb") as fh:
-        pyproject_toml = tomli.load(fh)
+    with (project_root / "pyproject.toml").open("r") as fh:
+        pyproject_toml = tomlkit.load(fh)
 
     pyproject_toml.setdefault("tool", {})["kedro"] = build_config
 
-    with (project_root / "pyproject.toml").open("wb") as fh:
-        tomli_w.dump(pyproject_toml, fh)
+    with (project_root / "pyproject.toml").open("w") as fh:
+        tomlkit.dump(pyproject_toml, fh)

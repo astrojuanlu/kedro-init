@@ -11,8 +11,7 @@ description = "A simple CLI command that initialises a Kedro project from an exi
 dependencies = [
     "click",
     "pygetimportables>=0.2.1",
-    "tomli",
-    "tomli-w",
+    "tomlkit",
 ]
 authors = [
     {name = "Juan Luis Cano Rodríguez", email = "juan_luis_cano@mckinsey.com"}
