@@ -14,6 +14,19 @@ To install, run
 (.venv) $ pip install kedro-init
 ```
 
+## Usage
+
+For example, from a Poetry package:
+
+```
+(.venv) $ poetry new --src test-project && cd test-project
+(.venv) $ kedro-init .
+[00:19:38] Looking for existing package directories                             cli.py:25
+[00:19:45] Initialising config directories                                      cli.py:25
+           Creating modules                                                     cli.py:25
+           🔶 Kedro project successfully initialised!                           cli.py:26
+```
+
 ## Development
 
 To run style checks:
@@ -22,7 +35,3 @@ To run style checks:
 (.venv) $ pip install pre-commit
 (.venv) $ pre-commit run -a
 ```
-
-## Overview
-
-Add a longer description here.
