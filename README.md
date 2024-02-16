@@ -11,7 +11,7 @@ A simple CLI command that initialises a Kedro project from an existing Python pa
 To install, run
 
 ```
-(.venv) $ pip install kedro-init
+(.venv) $ pip install "kedro-init @ https://github.com/astrojuanlu/kedro-init.git"
 ```
 
 ## Usage
