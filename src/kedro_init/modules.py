@@ -18,6 +18,8 @@ def get_or_create_modules(
 
     package_name = build_config["package_name"]
     package_dir = next(project_root.glob(f"*/{package_name}"), None)
+    if package_dir is None:
+        package_dir = next(project_root.glob(f"{package_name}"), None)
 
     modules = {}
     for module_name in module_templates:
