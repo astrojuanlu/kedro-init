@@ -37,6 +37,7 @@ def kedro_pyproject(tool_name: str) -> dict:
             "package_name": {"type": "string"},
             "project_name": {"type": "string", "format": "pep508-identifier"},
             "kedro_init_version": {"type": "string", "format": "pep440"},
+            "source_dir": {"type": "string"},
         },
         "required": ["package_name", "project_name", "kedro_init_version"],
         "additionalProperties": False,
@@ -68,11 +69,19 @@ def get_or_create_build_config(project_root: Path) -> tuple[bool, t.Any]:
         else:
             raise ValueError("More than one package found in project root")
 
-        return False, {
+        kedro_config = {
             "project_name": project_name,
             "package_name": package_name,
             "kedro_init_version": kedro_version,
         }
+        if (project_root / package_name).is_dir():
+            kedro_config["source_dir"] = ""
+        else:
+            package_dir = next(project_root.glob(f"*/{package_name}"), None)
+            source_dir = package_dir.parent.name if package_dir is not None else None
+            if package_dir is not None and source_dir != "src":
+                kedro_config["source_dir"] = source_dir
+        return False, kedro_config
 
     # Kedro build config might be present, return it if valid
     try:
