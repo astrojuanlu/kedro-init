@@ -1,9 +1,10 @@
 # Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
-_commit: a0a99eeac348d5aab76822af5e0f98f07a0f4044
+_commit: v2024.03.1
 _src_path: gh:astrojuanlu/copier-pylib
 author_email: juan_luis_cano@mckinsey.com
 author_name: Juan Luis Cano Rodríguez
 github_org: astrojuanlu
 package_name: kedro_init
 project_name: kedro-init
-short_description: A simple CLI command that initialises a Kedro project from an existing Python package
+short_description: A simple CLI command that initialises a Kedro project from an existing
+    Python package
