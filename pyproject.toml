@@ -28,6 +28,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 dynamic = ["version"]
 
@@ -81,7 +82,7 @@ convention = "pep257"
 "tests/**/*" = ["D", "PLR2004"]
 
 [tool.mypy]
-python_version = "3.7"
+python_version = "3.9"
 warn_redundant_casts = true
 warn_unused_configs = true
 pretty = true
