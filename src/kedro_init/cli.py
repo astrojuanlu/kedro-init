@@ -14,7 +14,7 @@ from .init import init, init_steps
 
 @click.command()
 @click.argument("project_root", type=click.Path(exists=False))
-def cli(project_root: str):
+def cli(project_root: str) -> None:
     project_root_path = Path(project_root)
     if rich_available:
         console = Console()

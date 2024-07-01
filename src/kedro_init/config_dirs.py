@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 
 CONFIG_DIRS = [
@@ -6,7 +8,9 @@ CONFIG_DIRS = [
 ]
 
 
-def get_or_create_config_dirs(project_root: Path, *, expected_config_dirs=None):
+def get_or_create_config_dirs(
+    project_root: Path, *, expected_config_dirs: list[Path] | None = None
+) -> dict[Path, tuple[bool, Path]]:
     if not expected_config_dirs:
         expected_config_dirs = CONFIG_DIRS
 
@@ -21,5 +25,5 @@ def get_or_create_config_dirs(project_root: Path, *, expected_config_dirs=None):
     return config_dirs
 
 
-def init_config_dir(project_root: Path, *, target_config_dir: Path):
+def init_config_dir(project_root: Path, *, target_config_dir: Path) -> None:
     target_config_dir.mkdir(parents=True, exist_ok=True)
