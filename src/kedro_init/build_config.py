@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import tempfile
 import typing as t
 import zipfile
@@ -9,14 +11,17 @@ from installer.utils import parse_metadata_file
 try:
     from importlib.metadata import PackageNotFoundError, version
 except ModuleNotFoundError:
-    from importlib_metadata import PackageNotFoundError, version
+    from importlib_metadata import PackageNotFoundError, version  # type: ignore
 
 import tomlkit
 from pygetimportables import _simple_build_wheel, get_top_importables_from_wheel
 from validate_pyproject import api, errors, plugins
+from validate_pyproject.types import Schema
 
 
-def _get_importables_and_project_name(project_root, outdir):
+def _get_importables_and_project_name(
+    project_root: str | Path, outdir: str | Path
+) -> tuple[set[str], str]:
     wheel_path = _simple_build_wheel(project_root, outdir)
 
     with zipfile.ZipFile(wheel_path, "r") as zf:
@@ -28,20 +33,22 @@ def _get_importables_and_project_name(project_root, outdir):
     return package_names, project_name
 
 
-def kedro_pyproject(tool_name: str) -> dict:
-    return {
-        "$id": "https://docs.kedro.org/en/latest/",
-        "type": "object",
-        "description": "Kedro project metadata",
-        "properties": {
-            "package_name": {"type": "string"},
-            "project_name": {"type": "string", "format": "pep508-identifier"},
-            "kedro_init_version": {"type": "string", "format": "pep440"},
-            "source_dir": {"type": "string"},
-        },
-        "required": ["package_name", "project_name", "kedro_init_version"],
-        "additionalProperties": False,
-    }
+def kedro_pyproject(tool_name: str) -> Schema:
+    return Schema(
+        {
+            "$id": "https://docs.kedro.org/en/latest/",
+            "type": "object",
+            "description": "Kedro project metadata",
+            "properties": {
+                "package_name": {"type": "string"},
+                "project_name": {"type": "string", "format": "pep508-identifier"},
+                "kedro_init_version": {"type": "string", "format": "pep440"},
+                "source_dir": {"type": "string"},
+            },
+            "required": ["package_name", "project_name", "kedro_init_version"],
+            "additionalProperties": False,
+        }
+    )
 
 
 def get_or_create_build_config(project_root: Path) -> tuple[bool, t.Any]:
@@ -77,10 +84,11 @@ def get_or_create_build_config(project_root: Path) -> tuple[bool, t.Any]:
         if (project_root / package_name).is_dir():
             kedro_config["source_dir"] = ""
         else:
+            # FIXME: What happens if package_dir is None? (See type: ignore below)
             package_dir = next(project_root.glob(f"*/{package_name}"), None)
             source_dir = package_dir.parent.name if package_dir is not None else None
             if package_dir is not None and source_dir != "src":
-                kedro_config["source_dir"] = source_dir
+                kedro_config["source_dir"] = source_dir  # type: ignore
         return False, kedro_config
 
     # Kedro build config might be present, return it if valid
@@ -89,10 +97,10 @@ def get_or_create_build_config(project_root: Path) -> tuple[bool, t.Any]:
     except errors.ValidationError as exc:
         raise ValueError("Kedro build configuration is invalid") from exc
     else:
-        return True, pyproject_toml["tool"]["kedro"]
+        return True, pyproject_toml["tool"]["kedro"]  # type: ignore
 
 
-def init_build_config(project_root: Path, *, build_config: dict[str, str]):
+def init_build_config(project_root: Path, *, build_config: dict[str, str]) -> None:
     with (project_root / "pyproject.toml").open("r") as fh:
         pyproject_toml = tomlkit.load(fh)
 

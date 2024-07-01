@@ -1,3 +1,4 @@
+import typing as t
 from pathlib import Path
 
 from .build_config import get_or_create_build_config, init_build_config
@@ -5,7 +6,7 @@ from .config_dirs import get_or_create_config_dirs, init_config_dir
 from .modules import get_or_create_modules, init_module
 
 
-def init_steps(project_root: Path):
+def init_steps(project_root: Path) -> t.Generator[str, None, None]:
     yield "Looking for existing package directories"
 
     existing, build_config = get_or_create_build_config(project_root)
@@ -31,6 +32,6 @@ def init_steps(project_root: Path):
             )
 
 
-def init(project_root: Path):
+def init(project_root: Path) -> None:
     for _ in init_steps(project_root):
         pass
