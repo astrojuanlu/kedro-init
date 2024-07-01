@@ -11,7 +11,7 @@ A simple CLI command that initialises a Kedro project from an existing Python pa
 To install, run
 
 ```
-(.venv) $ pip install "kedro-init @ https://github.com/astrojuanlu/kedro-init.git"
+(.venv) $ pip install kedro-init
 ```
 
 ## Usage
@@ -32,6 +32,6 @@ For example, from a Poetry package:
 To run style checks:
 
 ```
-(.venv) $ pip install pre-commit
-(.venv) $ pre-commit run -a
+(.venv) $ pip install tox
+(.venv) $ tox
 ```
