@@ -6,15 +6,19 @@
 
 A simple CLI command that initialises a Kedro project from an existing Python package
 
-## Installation
+## Installation and usage
 
-To install, run
+To use, run
 
 ```
-(.venv) $ pip install kedro-init
+$ uvx kedro-init .
 ```
 
-## Usage
+Or, alternatively,
+
+```
+$ pipx run kedro-init .
+```
 
 For example, from a Poetry package:
 
@@ -25,6 +29,18 @@ For example, from a Poetry package:
 [00:19:45] Initialising config directories                                      cli.py:25
            Creating modules                                                     cli.py:25
            🔶 Kedro project successfully initialised!                           cli.py:26
+```
+
+And with a uv package:
+
+```
+$ mkdir test-project && cd test-project && uv init
+Initialized project `test-project`
+$ uvx kedro-init .
+[09:06:24] Looking for existing package directories                      cli.py:25
+[09:06:25] Initialising config directories                               cli.py:25
+           Creating modules                                              cli.py:25
+           🔶 Kedro project successfully initialised!                    cli.py:26
 ```
 
 ## Development
